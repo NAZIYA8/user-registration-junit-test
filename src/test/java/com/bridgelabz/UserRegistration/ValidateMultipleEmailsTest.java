@@ -1,10 +1,23 @@
+/**
+ * ****************************************************************************************
+ * Purpose: This class contains the JUnit Parameterized test to validate multiple email id's
+ * i.e both positive and negative.
+ * Positive test cases validates the entry successfully.
+ * Negative test cases fails the entry. 
+ *
+ * @author Syeda Naziya
+ * @version 1.0
+ * @since 19-06-2021
+ * ****************************************************************************************
+ */
+
 package com.bridgelabz.UserRegistration;
+
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.Collection;
 import org.junit.runners.Parameterized;
-
-import org.junit.Assert;
 import org.junit.Test;
 import regex.UserRegistration;
 import org.junit.runner.RunWith;
@@ -12,13 +25,14 @@ import org.junit.runner.RunWith;
 @RunWith(Parameterized.class)
 public class ValidateMultipleEmailsTest {
 	private String email;
-	private boolean result;
+	private boolean expectedresult;
 
-	public void validateMultipleEmailTest(String email, boolean result) {
+	public ValidateMultipleEmailsTest(String email, boolean result) {
 		this.email = email;
-		this.result = result;
+		this.expectedresult = expectedresult;
 	}
 
+	
 	@Parameterized.Parameters
 	public static Collection input() {
 		return Arrays.asList(new Object[][] { { "abc@yahoo.com", true }, { "abc-100@yahoo.com", true },
@@ -34,9 +48,8 @@ public class ValidateMultipleEmailsTest {
 	@Test
 	public void enteredEmail_shouldBeReturnedAsParameterizedResult() {
 		UserRegistration user = new UserRegistration();
-
 		boolean result = user.validateMultipleEmail(this.email);
-		Assert.assertEquals(this.result, result);
+		assertEquals(this.expectedresult, result);
 
 	}
 

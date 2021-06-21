@@ -12,16 +12,15 @@
 
 package com.bridgelabz.UserRegistration;
 
-import static org.junit.Assert.*;
 
-import org.junit.Assert;
+import static org.junit.Assert.*;
+//import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
 import regex.UserRegistration;
 
 public class UserRegistrationTest {
-	UserRegistration user;
+	UserRegistration user = null;
 
 	@Before
 	public void setUp() {
@@ -31,49 +30,49 @@ public class UserRegistrationTest {
 	@Test
 	public void validateFirstName_shouldReturnTrue_whenFirstLetterIsCapital() {
 		boolean result = user.validateFirstName("Naziya");
-		Assert.assertTrue(result);
+		assertTrue(result);
 	}
 
 	@Test
 	public void validateFirstName_shouldReturnFalse_whenFirstLetterIsNotCapital() {
 		boolean result = user.validateFirstName("naziya");
-		Assert.assertFalse(result);
+		assertFalse(result);
 	}
 
 	@Test
 	public void validateFirstName_shouldReturnTrue_whenFirstNameStartsWithCapitalAndHasMin3Char() {
 		boolean result = user.validateFirstName("Naz");
-		Assert.assertTrue(result);
+		assertTrue(result);
 	}
 
 	@Test
 	public void validateFirstName_shouldReturnFalse_whenFirstNameStartsWithCapitalAndHasLessThan3Char() {
 		boolean result = user.validateFirstName("Na");
-		Assert.assertFalse(result);
+		assertFalse(result);
 	}
 
 	@Test
 	public void validateLastName_shouldReturnTrue_whenFirstLetterIsCapital() {
 		boolean result = user.validateLastName("Syeda");
-		Assert.assertTrue(result);
+		assertTrue(result);
 	}
 
 	@Test
 	public void validateLastName_shouldReturnFalse_whenFirstLetterIsNotCapital() {
 		boolean result = user.validateLastName("syeda");
-		Assert.assertFalse(result);
+		assertFalse(result);
 	}
 
 	@Test
 	public void validateLastName_shouldReturnTrue_whenLastNameStartsWithCapitalAndHasMin3Char() {
 		boolean result = user.validateLastName("Sye");
-		Assert.assertTrue(result);
+		assertTrue(result);
 	}
 
 	@Test
 	public void validateLastName_shouldReturnFalse_whenLastNameStartsWithCapitalAndHasLessThan3Char() {
 		boolean result = user.validateLastName("Sy");
-		Assert.assertFalse(result);
+		assertFalse(result);
 	}
 
 	@Test
@@ -147,4 +146,8 @@ public class UserRegistrationTest {
 		boolean result = user.validatePassword("Jsfiu74hd");
 		assertFalse(result);
 	}
+	
+	
+	
+	
 }
