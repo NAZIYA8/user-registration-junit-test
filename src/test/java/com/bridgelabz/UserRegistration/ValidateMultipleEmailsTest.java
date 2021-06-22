@@ -1,9 +1,8 @@
 /**
  * ****************************************************************************************
  * Purpose: This class contains the JUnit Parameterized test to validate multiple email id's
- * i.e both positive and negative.
- * Positive test cases validates the entry successfully.
- * Negative test cases fails the entry. 
+ 			Parameterized test is used to execute the same test over and over again using
+ 			different values.
  *
  * @author Syeda Naziya
  * @version 1.0
@@ -32,7 +31,6 @@ public class ValidateMultipleEmailsTest {
 		this.expectedresult = expectedresult;
 	}
 
-	
 	@Parameterized.Parameters
 	public static Collection input() {
 		return Arrays.asList(new Object[][] { { "abc@yahoo.com", true }, { "abc-100@yahoo.com", true },
