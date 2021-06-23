@@ -12,36 +12,37 @@
 package regex;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+/**
+ * This annotation @FunctionalInterface is used to capture Compile Time Errors.
+ */
+@FunctionalInterface
+interface NewUserValidationInterface {
+	boolean validate(String input);
+}
 
 public class UserRegistration {
 
-	static Scanner scan = new Scanner(System.in);
+	NewUserValidationInterface validateFirstName = firstName -> firstName.matches("^[A-Z]{1}[a-z]{2,}");
+	NewUserValidationInterface validateLastName = lastName -> lastName.matches("^[A-Z]{1}[a-z]{2,}");
+	NewUserValidationInterface validateEmail = email -> email.matches("^[a-zA-Z0-9]+([+.-][a-zA-Z0-9]+)*[@][a-zA-Z0-9]+[.][a-zA-Z]{2,4}([.][a-zA-Z]{2,4})?");
+	NewUserValidationInterface validatePhoneNumber = phoneNumber -> phoneNumber.matches("^[0-9]{2}\\s{1}[0-9]{10}");
+	NewUserValidationInterface validatePassword = password -> password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*?[!@#$%^&*?=-]).{8,}$");
 
 	/**
 	 * This method is used to take the first name as input and check if it is valid
 	 * or not.
 	 * 
 	 * @param firstName is the firstName of user
+	 * @return True if valid First name
+	 * @throws ValidationException
 	 */
-	public static boolean validateFirstName(String firstName) {
+	public boolean validateFirstName(String firstName) throws ValidationException {
 
-		Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}");
-		if (firstName == null) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher((firstName));
-		boolean check = matcher.matches();
-		if (check) {
+		if (validateFirstName.validate(firstName)) {
 			return true;
 		} else
-			try {
-				throw new ValidationException("Invalid First Name");
-			} catch (ValidationException e) {
-				e.printStackTrace();
-			}
-		return check;
+			throw new ValidationException("Invalid First Name");
 	}
 
 	/**
@@ -49,24 +50,15 @@ public class UserRegistration {
 	 * or not.
 	 * 
 	 * @param lastName is the last name of user
+	 * @return True if valid Last name
+	 * @throws ValidationException
 	 */
-	public static boolean validateLastName(String lastName) {
+	public boolean validateLastName(String lastName) throws ValidationException {
 
-		Pattern pattern = Pattern.compile("^[A-Z]{1}[a-z]{2,}");
-		if (lastName == null) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher((lastName));
-		boolean check = matcher.matches();
-		if (check) {
+		if (validateLastName.validate(lastName)) {
 			return true;
 		} else
-			try {
-				throw new ValidationException("Invalid Last Name");
-			} catch (ValidationException e) {
-				e.printStackTrace();
-			}
-		return check;
+			throw new ValidationException("Invalid Last Name");
 	}
 
 	/**
@@ -74,25 +66,14 @@ public class UserRegistration {
 	 * valid or not.
 	 * 
 	 * @param email is the email id of the user
+	 * @return True if valid email id
+	 * @throws ValidationException
 	 */
-	public static boolean validateEmail(String email) {
-
-		Pattern pattern = Pattern
-				.compile("^[a-zA-Z0-9]+([+.-][a-zA-Z0-9]+)*[@][a-zA-Z0-9]+[.][a-zA-Z]{2,4}([.][a-zA-Z]{2,4})?");
-		if (email == null) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher((email));
-		boolean check = matcher.matches();
-		if (check) {
+	public boolean validateEmail(String email) throws ValidationException {
+		if (validateEmail.validate(email)) {
 			return true;
 		} else
-			try {
-				throw new ValidationException("Invalid Email Address");
-			} catch (ValidationException e) {
-				e.printStackTrace();
-			}
-		return check;
+			throw new ValidationException("Invalid Email");
 	}
 
 	/**
@@ -100,24 +81,14 @@ public class UserRegistration {
 	 * valid or not.
 	 * 
 	 * @param phoneNumber entered by user
+	 * @return True if valid phoneNumber
+	 * @throws ValidationException
 	 */
-	public static boolean validatePhoneNumber(String phoneNumber) {
-
-		Pattern pattern = Pattern.compile("^[0-9]{2}\\s{1}[0-9]{10}");
-		if (phoneNumber == null) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher((phoneNumber));
-		boolean check = matcher.matches();
-		if (check) {
+	public boolean validatePhoneNumber(String phoneNumber) throws ValidationException {
+		if (validatePhoneNumber.validate(phoneNumber)) {
 			return true;
 		} else
-			try {
-				throw new ValidationException("Invalid Phone Number");
-			} catch (ValidationException e) {
-				e.printStackTrace();
-			}
-		return check;
+			throw new ValidationException("Invalid PhoneNumber");
 	}
 
 	/**
@@ -125,25 +96,17 @@ public class UserRegistration {
 	 * or not. Rule1: Minimum 8 characters. Rule2: Should have at least 1 upper
 	 * case. Rule3: Should have at least 1 numeric. Rule4: Should have exactly 1
 	 * special character.
+	 * 
+	 * @param password entered by user
+	 * @return True if valid password
+	 * @throws ValidationException
 	 */
-	public static boolean validatePassword(String password) {
+	public boolean validatePassword(String password) throws ValidationException {
 
-		Pattern pattern = Pattern.compile("^(?=.*[A-Z])(?=.*\\d)(?=.*?[!@#$%^&*?=-]).{8,}$");
-		if (password == null) {
-			return false;
-		}
-		Matcher matcher = pattern.matcher((password));
-		boolean check = matcher.matches();
-		if (check) {
-			System.out.println("Entered Password is Valid");
+		if (validatePassword.validate(password)) {
 			return true;
 		} else
-			try {
-				throw new ValidationException("Invalid Password");
-			} catch (ValidationException e) {
-				e.printStackTrace();
-			}
-		return check;
+			throw new ValidationException("Invalid Password");
 	}
 
 	/**
@@ -152,27 +115,53 @@ public class UserRegistration {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		UserRegistration user = new UserRegistration();
 		Scanner scanner = new Scanner(System.in);
 
 		System.out.print("Enter First Name : ");
-		String firstName = scanner.next();
-		System.out.println(validateFirstName(firstName));
+		String firstName = scanner.nextLine();
+		try {
+			if (user.validateFirstName(firstName))
+				System.out.println("Valid First Name");
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
 
 		System.out.print("Enter Last Name : ");
-		String lastName = scanner.next();
-		System.out.println(validateLastName(lastName));
+		String lastName = scanner.nextLine();
+		try {
+			if (user.validateLastName(lastName))
+				System.out.println("Valid Last Name");
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
 
 		System.out.print("Enter Email : ");
-		String email = scanner.next();
-		System.out.println(validateEmail(email));
+		String email = scanner.nextLine();
+		try {
+			if (user.validateEmail(email))
+				System.out.println("Valid email");
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
 
 		System.out.print("Enter Phone Number : ");
 		String phoneNumber = scanner.next();
-		System.out.println(validatePhoneNumber(phoneNumber));
+		try {
+			if (user.validatePhoneNumber(phoneNumber))
+				System.out.println("Valid Phone Number");
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
 
 		System.out.print("Enter Password : ");
 		String password = scanner.next();
-		System.out.println(validatePassword(password));
+		try {
+			if (user.validatePassword(password))
+				System.out.println("Valid Password");
+		} catch (ValidationException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
